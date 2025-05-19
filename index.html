@@ -48,9 +48,22 @@
   <h3>Vue RH</h3>
   <table id="rhTable"></table>
 </div>
-
+  
+<script src="https://unpkg.com/tabletop@1.5.1/tabletop.js"></script>
 <script>
-  const publicSpreadsheetURL = 'https://docs.google.com/spreadsheets/d/1aZek6YwzL94ideDVBjiJQF_-Mrtt5hVS3fCnXuGj_7E/edit?usp=sharing';
+  window.onload = function () {
+    Tabletop.init({
+      key: '1aZek6YwzL94ideDVBjiJQF_-Mrtt5hVS3fCnXuGj_7E',
+      simpleSheet: true,
+      callback: function(data, tabletop) {
+        console.log(data); // voir les données récupérées
+        // ici tu peux afficher la vue Global, RH, etc.
+      }
+    });
+  }
+</script>
+<script>
+  const publicSpreadsheetURL = 'https://docs.google.com/spreadsheets/d/1aZek6YwzL94ideDVBjiJQF_-Mrtt5hVS3fCnXuGj_7E/';
   let globalData = [];
 
   function init() {
