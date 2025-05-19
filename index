@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Accueil - Dashboard Agent</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tabletop@1.5.1/tabletop.min.js"></script>
+</head>
+<body>
+  <h2>Tableau de bord global</h2>
+  <canvas id="globalChart" width="400" height="200"></canvas>
+
+  <h3>Se connecter</h3>
+  <input type="email" id="emailInput" placeholder="Entrez votre adresse e-mail" />
+  <button onclick="validateEmail()">Valider</button>
+
+  <div id="nextLinks" style="display:none;">
+    <p>Accès :</p>
+    <a href="prod.html">Vue Production</a> |
+    <a href="rh.html">Vue RH</a>
+  </div>
+
+  <script>
+    function validateEmail() {
+      const email = document.getElementById("emailInput").value.trim();
+      if (email) {
+        localStorage.setItem("agentEmail", email);
+        document.getElementById("nextLinks").style.display = "block";
+      }
+    }
+
+    function loadGlobalData() {
+      Tabletop.init({
+        key: 'https://docs.google.com/spreadsheets/d/TON_ID/pubhtml',
+        simpleSheet: true,
+        wanted: ["Global"],
+        callback: function(data) {
+          const labels = data.map((_, i) => "Agent " + (i + 1));
+          const values = data.map(row => parseInt(row.Pts || 0));
+
+          const ctx = document.getElementById("globalChart").getContext("2d");
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Points',
+                data: values,
+                backgroundColor: 'rgba(75, 192, 192, 0.6)'
+              }]
+            }
+          });
+        }
+      });
+    }
+
+    window.onload = loadGlobalData;
+  </script>
+</body>
+</html>
